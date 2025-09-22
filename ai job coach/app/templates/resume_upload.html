@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="resume-page">
+<section class="resume-section">
+  <h2>Resume Upload</h2>
+  <form id="resume-form" method="POST" enctype="multipart/form-data">
+    <label class="file-label">
+      Choose Resume
+      <input type="file" name="resumes" accept=".pdf,.docx" required>
+    </label>
+
+    <label class="job-desc-label">
+      Job Description
+      <textarea name="job_description" placeholder="Paste job description here..." required></textarea>
+    </label>
+
+    <button type="submit" class="analyze-btn">Analyze Resume</button>
+  </form>
+
+  {% if progress is defined %}
+  <div class="progress-container">
+    <div class="progress-bar" style="width: {{ progress }}%"></div>
+    <span>{{ progress }}%</span>
+  </div>
+  {% endif %}
+
+  {% if ai_feedback %}
+  <div class="feedback-section">
+    <h3>AI Feedback</h3>
+    <div class="feedback-content">
+      {{ ai_feedback|safe }}
+    </div>
+  </div>
+  {% endif %}
+</section>
+</div>
+{% endblock %}

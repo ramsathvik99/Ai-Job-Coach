@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container">
+  <main class="main-content">
+    <section class="overview">
+      <h1>Project Overview</h1>
+      <p>Track your progress and stay organized throughout your job search.</p>
+    </section>
+
+    <section class="stats">
+      <div class="stat-card">
+        <p>Applications Sent</p>  
+        <h3>{{ stats.applications_sent }}</h3>
+      </div>
+      <div class="stat-card">
+        <p>Interviews Scheduled</p>
+        <h3>{{ stats.interviews_scheduled }}</h3>
+      </div>
+      <div class="stat-card">
+        <p>Offers Received</p>
+        <h3>{{ stats.offers_received }}</h3>
+      </div>
+    </section>
+
+    <section class="tools">
+      <h2>Tools</h2>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <h3><a href="{{ url_for('resume.resume_upload') }}">Resume</a></h3>
+          <p>Craft a compelling resume</p>
+        </div>
+        <div class="tool-card">
+          <h3><a href="{{ url_for('coverletter.coverletter') }}">Cover Letter</a></h3>
+          <p>Create a tailored cover letter</p>
+        </div>
+        <div class="tool-card">
+          <h3><a href="{{ url_for('prompts.prompt_lab') }}">Prompts</a></h3>
+          <p>Get inspired with writing prompts</p>
+        </div>
+        <div class="tool-card">
+          <h3><a href="{{ url_for('interviewanswers.interview_page') }}">Interview Practice</a></h3>
+          <p>Practice your interview skills</p>
+        </div>
+        <div class="tool-card">
+          <h3><a href="{{ url_for('insights.market_insights') }}">AI Insights</a></h3>
+          <p>Gain insights from AI</p>
+        </div>
+        <div class="tool-card">
+          <h3><a href="{{ url_for('tracker.tracker') }}">Job Tracker</a></h3>
+          <p>Manage your job applications</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+{% endblock %}

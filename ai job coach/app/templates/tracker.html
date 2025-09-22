@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="tracker-section">
+  <div class="tracker-head">
+    <h2>Job Application Tracker</h2>
+    <form id="tracker-form" method="POST" action="{{ url_for('tracker.tracker') }}">
+      <input type="text" name="company" placeholder="Company Name" required><br>
+      <input type="text" name="job_title" placeholder="Job Role" required><br>  
+      <select name="status" required>
+        <option value="">Select Status</option>
+        <option value="Applied">Applied</option>
+        <option value="Interview">Interview Scheduled</option>
+        <option value="Offered">Offered</option>
+      </select><br>
+      <label for="deadline">Deadline (optional):</label>
+      <input type="date" name="deadline" id="deadline"><br>  
+      <textarea name="notes" placeholder="Notes"></textarea><br>
+      <button type="submit">Add Job</button>
+    </form>
+    <br>
+    <a href="{{ url_for('tracker.tracker_data') }}">
+      <button type="button">See All Applications</button>
+    </a>
+  </div>
+</section>
+{% endblock %}

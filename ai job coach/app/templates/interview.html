@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="interview-section">
+  <div class="interview-head">
+    <h2>INTERVIEW PRACTICE</h2>
+
+    <select id="roleSelect">
+      <option value="">Select Role</option>
+      <option value="Front-End Engineer">Front-End Engineer</option>
+      <option value="Back-End Engineer">Back-End Engineer</option>
+      <option value="Full Stack Engineer">Full Stack Engineer</option>
+      <option value="Software Engineer in Test (QA Engineer)">Software Engineer in Test (QA Engineer)</option>
+      <option value="Software Development Engineer in Test (SDET)">Software Development Engineer in Test (SDET)</option>
+      <option value="DevOps Engineer">DevOps Engineer</option>
+      <option value="Security Engineer">Security Engineer</option>
+      <option value="Data Engineer">Data Engineer</option>
+      <option value="Cloud Architect">Cloud Architect</option>
+      <option value="Systems Engineer">Systems Engineer</option>
+    </select>
+
+    <div id="interviewContainer" style="margin-top: 20px;">
+      <p id="questionBox" style="font-weight: bold;"></p>
+      <textarea id="answerInput" placeholder="Type your answer here..." rows="4" cols="50"></textarea><br>
+      <button id="submitAnswerBtn">Submit Answer</button>
+      <p id="feedbackBox" style="margin-top: 10px; color: green;"></p>
+      <p id="progressBox" style="margin-top: 10px;"></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

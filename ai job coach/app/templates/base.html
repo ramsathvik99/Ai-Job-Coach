@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Powered JOB COACH</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+
+  <!-- Header with logo and navbar -->
+  <header>
+    <div class="navbar">
+      <nav style="display: flex; align-items: center; padding: 10px;">
+        <img src="{{ url_for('static', filename='images/img12.jpeg') }}" alt="Future Climb Logo" style="height: 70px; margin-right: 10px;">
+      </nav>
+      <a href="/" class="brand">FUTURE CLIMB</a>
+      <a href="/" class="about">About</a>
+      <nav class="nav-links">
+        <a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}">Login</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Flash messages -->
+  <div class="flash-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- Page content -->
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h2 class="logo">COACH</h2>
+        <p class="description">
+          AI-powered career development for everyone,<br>
+          from students to job-seekers.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h3>Coach</h3>
+        <ul>
+          <li><a href="{{ url_for('auth.login') }}">Sign in</a></li>
+          <li><a href="#">Partner</a></li>
+          <li><a href="#">About Coach</a></li>
+          <li><a href="#">Impact</a></li>
+          <li><a href="#">Safety</a></li>
+          <li><a href="#">Guidelines for Use</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>futureclimb.org</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Mission</a></li>
+          <li><a href="#">Ask a Question</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Connect with us</h3>
+        <div class="social-icons">
+          <a href="#"><img src="{{ url_for('static', filename='images/insta.jpeg') }}" alt="Instagram"></a>
+          <a href="#"><img src="{{ url_for('static', filename='images/link.jpeg') }}" alt="LinkedIn"></a>
+          <a href="#"><img src="{{ url_for('static', filename='images/face.jpeg') }}" alt="Facebook"></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        <a href="#">Privacy Policy</a> |
+        <a href="#">Terms and Conditions</a>
+      </div>
+      <p>&copy; Copyright 2025. All Rights Reserved.<br>
+      Coach is an AI Job coach from Future Climb, a registered 501(c)(3) nonprofit.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

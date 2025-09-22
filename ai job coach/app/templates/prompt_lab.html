@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="prompt-section">
+  <div class="prompt-head">
+    <h2>AI PROMPT PLAYGROUND</h2>
+
+    <form method="POST" action="{{ url_for('prompts.prompt_lab') }}">
+      <textarea name="prompt_text" placeholder="Type your custom prompt here..." required></textarea><br>
+      <button type="submit">Ask AI</button>
+    </form>
+
+    {% if ai_response %}
+    <div class="prompt-output" style="margin-top: 20px;">
+      <h4>AI Response:</h4>
+      <div class="prompt-content">
+        {{ ai_response|safe }}
+      </div>
+    </div>
+    {% endif %}    
+  </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="insights-section">
+  <div class="insights-head">
+    <h2>AI MARKET INSIGHTS</h2>
+
+    <form id="insights-form" method="POST">
+      <select name="role" required>
+        <option value="">Select a Role</option>
+        <option value="Software Engineer">Software Engineer</option>
+        <option value="Data Analyst">Data Analyst</option>
+        <option value="Data Scientist">Data Scientist</option>
+        <option value="ML Engineer">ML Engineer</option>
+        <option value="AI Researcher">AI Researcher</option>
+      </select>
+      <button type="submit">Get Insights</button>
+    </form>
+
+    {% if insights %}
+  <div class="insights-output">
+    <h4>Insights:</h4>
+    <div class="insights-content">
+     {{ insights.replace('\n', '<br>')|safe }}
+    </div>
+  </div>
+{% endif %}
+
+  </div>
+</section>
+{% endblock %}

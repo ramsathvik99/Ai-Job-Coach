@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="cover-section">
+  <div class="cover-wrapper">
+
+    <div class="cover-head">
+      <h2>Cover Letter Generator</h2>
+
+      <form id="cover-form" method="POST" enctype="multipart/form-data">
+        <input type="text" name="job_title" placeholder="Job Title" value="{{ job_title or '' }}" required><br>
+        <textarea name="job_description" placeholder="Paste job description here..." required>{{ job_desc or '' }}</textarea><br>
+        <button type="submit">Generate Cover Letter</button>
+      </form>
+    </div>
+
+    {% if generated_text %}
+    <div class="cover-output">
+      <h4>AI-Generated Cover Letter</h4>
+      <div class="cover-content">
+        {{ generated_text | safe }}
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}
