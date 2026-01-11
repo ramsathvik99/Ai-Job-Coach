@@ -1,0 +1,41 @@
+<div class="card" style="padding: var(--spacing-4); margin-bottom: 0;">
+    <div class="flex justify-between items-start mb-2">
+        <div>
+            <h4 style="font-size: var(--text-base); font-weight: 600; margin-bottom: 0;">{{ app.job_title }}</h4>
+            <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: var(--spacing-2);">{{ app.company }}
+            </p>
+        </div>
+
+        <!-- Dropdown or Action Menu could go here, for now just Delete -->
+        <form action="{{ url_for('tracker.delete_application', application_id=app.id) }}" method="POST"
+            onsubmit="return confirm('Delete this application?')">
+            <button type="submit" class="text-muted hover:text-red-500"
+                style="background: none; border: none; cursor: pointer; padding: 4px;">
+                <i class="ph ph-trash" style="font-size: 1.1rem;"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="flex justify-between items-center text-xs text-muted">
+        <div class="flex items-center gap-1">
+            <i class="ph ph-calendar-blank"></i>
+            <span>{{ app.deadline.strftime('%b %d') if app.deadline else 'No deadline' }}</span>
+        </div>
+
+        <!-- AI Analysis Indicator if exists -->
+        {% if app.ai_analysis %}
+        <div title="AI Analysis Available" style="color: var(--primary-color);">
+            <i class="ph ph-sparkle"></i>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if app.notes %}
+    <div class="mt-2 pt-2 border-t" style="border-color: var(--border-color);">
+        <p class="text-muted"
+            style="font-size: var(--text-xs); margin-bottom: 0; line-clamp: 2; -webkit-line-clamp: 2; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;">
+            {{ app.notes }}
+        </p>
+    </div>
+    {% endif %}
+</div>

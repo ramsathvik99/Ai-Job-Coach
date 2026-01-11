@@ -1,29 +1,89 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'dashboard_base.html' %}
 
-<section class="cover-section">
-  <div class="cover-wrapper">
+{% block dashboard_content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img5.jpeg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
 
-    <div class="cover-head">
-      <h2>Cover Letter Generator</h2>
+<header class="mb-8">
+  <div class="text-backdrop-light" style="display: inline-block;">
+    <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-2);">Cover Letter Generator</h1>
+    <p class="text-muted" style="margin-bottom: 0;">Generate a personalized cover letter in seconds.</p>
+  </div>
+</header>
 
-      <form id="cover-form" method="POST" enctype="multipart/form-data">
-        <input type="text" name="job_title" placeholder="Job Title" value="{{ job_title or '' }}" required><br>
-        <textarea name="job_description" placeholder="Paste job description here..." required>{{ job_desc or '' }}</textarea><br>
-        <button type="submit">Generate Cover Letter</button>
-      </form>
-    </div>
+<div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-8);">
 
+  <!-- Input Section -->
+  <div>
+    <form id="cover-form" method="POST" class="card">
+      <div class="form-group">
+        <label for="job_title" class="form-label" style="font-weight: 600;">Job Title</label>
+        <input type="text" id="job_title" name="job_title" class="form-input" placeholder="e.g. Senior Product Manager"
+          value="{{ job_title or '' }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="job_description" class="form-label" style="font-weight: 600;">Job Description</label>
+        <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: var(--spacing-2);">
+          Paste the job description or a summary of the role.
+        </p>
+        <textarea id="job_description" name="job_description" class="form-textarea" rows="12"
+          placeholder="Paste job description here..." required>{{ job_desc or '' }}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        <i class="ph ph-pen-nib" style="margin-right: 8px;"></i> Generate Cover Letter
+      </button>
+    </form>
+  </div>
+
+  <!-- Output Section -->
+  <div>
     {% if generated_text %}
-    <div class="cover-output">
-      <h4>AI-Generated Cover Letter</h4>
-      <div class="cover-content">
+    <div class="card" style="height: 100%; display: flex; flex-direction: column;">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <i class="ph ph-check-circle text-primary" style="font-size: 1.5rem;"></i>
+          <h3 style="font-size: var(--text-xl); margin-bottom: 0;">Generated Letter</h3>
+        </div>
+        <button class="btn btn-secondary" onclick="copyToClipboard()">
+          <i class="ph ph-copy" style="margin-right: 6px;"></i> Copy
+        </button>
+      </div>
+
+      <div id="letter-content" class="feedback-content"
+        style="background: white; padding: var(--spacing-8); border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: 'Times New Roman', serif; font-size: 1.1rem; line-height: 1.6; color: #333; box-shadow: var(--shadow-sm); height: 100%; overflow-y: auto;">
         {{ generated_text | safe }}
       </div>
     </div>
+    <script>
+      function copyToClipboard() {
+        const content = document.getElementById('letter-content').innerText;
+        navigator.clipboard.writeText(content).then(() => {
+          alert('Cover letter copied to clipboard!');
+        });
+      }
+    </script>
+    {% else %}
+    <!-- Placeholder state -->
+    <div class="card"
+      style="text-align: center; padding: var(--spacing-12); border-style: dashed; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div
+        style="background: #ECFDF5; width: 64px; height: 64px; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-4);">
+        <i class="ph ph-file-text" style="font-size: 32px; color: var(--status-success);"></i>
+      </div>
+      <h4 style="color: var(--text-muted);">Ready to write</h4>
+      <p class="text-muted" style="font-size: var(--text-sm);">Fill in the details on the left to generate your custom
+        cover letter.</p>
+    </div>
     {% endif %}
-
   </div>
-</section>
+</div>
 
 {% endblock %}

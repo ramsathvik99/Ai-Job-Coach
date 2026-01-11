@@ -1,23 +1,85 @@
-{% extends 'base.html' %}
-{% block content %}
-<section class="prompt-section">
-  <div class="prompt-head">
-    <h2>AI PROMPT PLAYGROUND</h2>
+{% extends 'dashboard_base.html' %}
 
-    <form method="POST" action="{{ url_for('prompts.prompt_lab') }}">
-      <textarea name="prompt_text" placeholder="Type your custom prompt here..." required></textarea><br>
-      <button type="submit">Ask AI</button>
-    </form>
+{% block dashboard_content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img11.jpeg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
+
+<header class="mb-8 text-backdrop-light">
+  <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-2);">Prompt Lab</h1>
+  <p class="text-muted" style="margin-bottom: 0;">Experiment with AI prompts to get the best career advice.</p>
+</header>
+
+<div class="grid" style="grid-template-columns: 250px 1fr; gap: var(--spacing-8);">
+
+  <!-- Saved Prompts Sidebar -->
+  <div class="card" style="height: fit-content;">
+    <h3
+      style="font-size: var(--text-base); margin-bottom: var(--spacing-4); display: flex; align-items: center; justify-content: space-between;">
+      Saved Prompts
+      <button class="btn btn-sm btn-secondary" style="padding: 2px 8px; font-size: 10px;">
+        <i class="ph ph-plus"></i> New
+      </button>
+    </h3>
+    <ul class="flex-col gap-2">
+      <li class="p-2 rounded hover:bg-slate-100 cursor-pointer text-sm text-muted">
+        <i class="ph ph-hash" style="margin-right: 4px;"></i> Salary Negotiation
+      </li>
+      <li class="p-2 rounded hover:bg-slate-100 cursor-pointer text-sm text-muted">
+        <i class="ph ph-hash" style="margin-right: 4px;"></i> Cold Email Template
+      </li>
+      <li class="p-2 rounded hover:bg-slate-100 cursor-pointer text-sm text-muted">
+        <i class="ph ph-hash" style="margin-right: 4px;"></i> Value Proposition
+      </li>
+    </ul>
+    <p class="text-muted mt-4 text-xs italic text-center">Select a prompt to load</p>
+  </div>
+
+  <!-- Editor Area -->
+  <div class="flex-col gap-6">
+
+    <div class="card">
+      <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-4);">Input</h3>
+      <form method="POST" action="{{ url_for('prompts.prompt_lab') }}">
+        <div class="form-group">
+          <textarea name="prompt_text" class="form-textarea" rows="6"
+            placeholder="Enter your prompt here... e.g., 'Write a thank you email after an interview with Google'"
+            required></textarea>
+        </div>
+        <div class="flex justify-end">
+          <button type="submit" class="btn btn-primary">
+            <i class="ph ph-paper-plane-right" style="margin-right: 8px;"></i> Run Prompt
+          </button>
+        </div>
+      </form>
+    </div>
 
     {% if ai_response %}
-    <div class="prompt-output" style="margin-top: 20px;">
-      <h4>AI Response:</h4>
-      <div class="prompt-content">
+    <div class="card" style="background: var(--bg-surface);">
+      <div class="flex items-center gap-2 mb-4">
+        <i class="ph ph-robot text-primary" style="font-size: 1.5rem;"></i>
+        <h3 style="font-size: var(--text-lg); margin-bottom: 0;">AI Response</h3>
+      </div>
+      <div class="prompt-content"
+        style="background: var(--bg-surface-alt); padding: var(--spacing-6); border-radius: var(--radius-md); font-family: monospace; font-size: 0.95rem; white-space: pre-wrap; line-height: 1.7;">
         {{ ai_response|safe }}
       </div>
+      <div class="flex justify-end mt-4">
+        <button class="btn btn-secondary btn-sm"
+          onclick="navigator.clipboard.writeText(document.querySelector('.prompt-content').innerText)">
+          <i class="ph ph-copy" style="margin-right: 4px;"></i> Copy Result
+        </button>
+      </div>
     </div>
-    {% endif %}    
-  </div>
-</section>
-{% endblock %}
+    {% endif %}
 
+  </div>
+
+</div>
+
+{% endblock %}

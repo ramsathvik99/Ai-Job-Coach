@@ -1,37 +1,129 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="resume-page">
-<section class="resume-section">
-  <h2>Resume Upload</h2>
-  <form id="resume-form" method="POST" enctype="multipart/form-data">
-    <label class="file-label">
-      Choose Resume
-      <input type="file" name="resumes" accept=".pdf,.docx" required>
-    </label>
+{% extends 'dashboard_base.html' %}
 
-    <label class="job-desc-label">
-      Job Description
-      <textarea name="job_description" placeholder="Paste job description here..." required></textarea>
-    </label>
+{% block dashboard_content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img.jpeg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
 
-    <button type="submit" class="analyze-btn">Analyze Resume</button>
-  </form>
-
-  {% if progress is defined %}
-  <div class="progress-container">
-    <div class="progress-bar" style="width: {{ progress }}%"></div>
-    <span>{{ progress }}%</span>
+<header class="mb-8">
+  <div class="text-backdrop-light" style="display: inline-block;">
+    <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-2);">Resume Analyzer</h1>
+    <p class="text-muted" style="margin-bottom: 0;">Optimize your resume for ATS and get actionable feedback.</p>
   </div>
-  {% endif %}
+</header>
 
-  {% if ai_feedback %}
-  <div class="feedback-section">
-    <h3>AI Feedback</h3>
-    <div class="feedback-content">
-      {{ ai_feedback|safe }}
+<div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-8);">
+
+  <!-- Upload Section -->
+  <div>
+    <form id="resume-form" method="POST" enctype="multipart/form-data" class="card">
+      <div class="form-group">
+        <label class="form-label" style="font-weight: 600;">Job Description</label>
+        <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: var(--spacing-2);">
+          Paste the job description you are applying for. This helps AI tailor the feedback.
+        </p>
+        <textarea name="job_description" class="form-textarea" rows="8" placeholder="Paste job description here..."
+          required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" style="font-weight: 600;">Upload Resume</label>
+        <div class="drag-drop-zone" id="drop-zone">
+          <i class="ph ph-cloud-arrow-up"
+            style="font-size: 3rem; color: var(--primary-color); margin-bottom: var(--spacing-4);"></i>
+          <p style="font-weight: 500;">Click to upload or drag & drop</p>
+          <p class="text-muted" style="font-size: var(--text-xs);">PDF or DOCX (Max 2MB)</p>
+          <input type="file" name="resumes" id="resume-input" accept=".pdf,.docx" required style="display: none;">
+        </div>
+        <div id="file-name" class="mt-4 text-center text-primary" style="font-weight: 500; font-size: var(--text-sm);">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        <i class="ph ph-magic-wand" style="margin-right: 8px;"></i> Analyze Resume
+      </button>
+    </form>
+  </div>
+
+  <!-- Results Section -->
+  <div>
+    {% if progress is defined %}
+    <div class="card mb-4">
+      <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-4);">Analysis Progress</h3>
+      <div class="progress-container"
+        style="background: var(--bg-surface-alt); height: 8px; border-radius: var(--radius-full); overflow: hidden;">
+        <div class="progress-bar"
+          style="width: {{ progress }}%; background: var(--primary-color); height: 100%; transition: width 0.3s ease;">
+        </div>
+      </div>
+      <p class="text-end mt-2 text-muted" style="font-size: var(--text-sm);">{{ progress }}% Complete</p>
     </div>
+    {% endif %}
+
+    {% if ai_feedback %}
+    <div class="card">
+      <div class="flex items-center gap-2 mb-4">
+        <i class="ph ph-sparkle text-primary" style="font-size: 1.5rem;"></i>
+        <h3 style="font-size: var(--text-xl); margin-bottom: 0;">AI Feedback</h3>
+      </div>
+      <div class="feedback-content"
+        style="background: var(--bg-surface-alt); padding: var(--spacing-4); border-radius: var(--radius-md); font-size: var(--text-sm); line-height: 1.6;">
+        {{ ai_feedback|safe }}
+      </div>
+    </div>
+    {% else %}
+    <!-- Placeholder state -->
+    <div class="card" style="text-align: center; padding: var(--spacing-12); border-style: dashed;">
+      <div
+        style="background: var(--bg-surface-alt); width: 64px; height: 64px; border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-4);">
+        <i class="ph ph-chart-bar" style="font-size: 32px; color: var(--text-light);"></i>
+      </div>
+      <h4 style="color: var(--text-muted);">No analysis yet</h4>
+      <p class="text-muted" style="font-size: var(--text-sm);">Upload your resume and a job description to see AI
+        insights here.</p>
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
-</section>
 </div>
+
+<script>
+  // Simple file upload interaction
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('resume-input');
+  const fileNameDisplay = document.getElementById('file-name');
+
+  dropZone.addEventListener('click', () => fileInput.click());
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('dragover');
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      updateFileName();
+    }
+  });
+
+  fileInput.addEventListener('change', updateFileName);
+
+  function updateFileName() {
+    if (fileInput.files.length > 0) {
+      fileNameDisplay.textContent = "Selected: " + fileInput.files[0].name;
+    }
+  }
+</script>
+
 {% endblock %}

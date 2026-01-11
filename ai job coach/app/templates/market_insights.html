@@ -1,30 +1,78 @@
-{% extends 'base.html' %}
-{% block content %}
-<section class="insights-section">
-  <div class="insights-head">
-    <h2>AI MARKET INSIGHTS</h2>
+{% extends 'dashboard_base.html' %}
 
-    <form id="insights-form" method="POST">
-      <select name="role" required>
-        <option value="">Select a Role</option>
-        <option value="Software Engineer">Software Engineer</option>
-        <option value="Data Analyst">Data Analyst</option>
-        <option value="Data Scientist">Data Scientist</option>
-        <option value="ML Engineer">ML Engineer</option>
-        <option value="AI Researcher">AI Researcher</option>
-      </select>
-      <button type="submit">Get Insights</button>
+{% block dashboard_content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img10.jpeg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
+
+<header class="mb-8 text-backdrop-light">
+  <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-2);">Market Insights</h1>
+  <p class="text-muted" style="margin-bottom: 0;">Stay ahead of the competition with AI-powered job market analysis.</p>
+</header>
+
+<div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-8);">
+
+  <div>
+    <form id="insights-form" method="POST" class="card">
+      <div class="form-group">
+        <label for="role" class="form-label" style="font-weight: 600;">Select Role</label>
+        <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: var(--spacing-2);">
+          Choose a role to get real-time insights on salary trends, required skills, and demand.
+        </p>
+        <select name="role" id="role" class="form-select" required>
+          <option value="">-- Choose a Role --</option>
+          <option value="Software Engineer">Software Engineer</option>
+          <option value="Data Analyst">Data Analyst</option>
+          <option value="Data Scientist">Data Scientist</option>
+          <option value="ML Engineer">ML Engineer</option>
+          <option value="AI Researcher">AI Researcher</option>
+          <option value="Product Manager">Product Manager</option>
+          <option value="UX Designer">UX Designer</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%;">
+        <i class="ph ph-trend-up" style="margin-right: 8px;"></i> Get Insights
+      </button>
     </form>
+  </div>
 
+  <div>
     {% if insights %}
-  <div class="insights-output">
-    <h4>Insights:</h4>
-    <div class="insights-content">
-     {{ insights.replace('\n', '<br>')|safe }}
-    </div>
-  </div>
-{% endif %}
+    <div class="card">
+      <div class="flex items-center gap-2 mb-4">
+        <div
+          style="background: #E0F2FE; color: #0284C7; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <i class="ph ph-lightbulb" style="font-size: 1.2rem;"></i>
+        </div>
+        <h3 style="font-size: var(--text-xl); margin-bottom: 0;">Market Analysis</h3>
+      </div>
 
+      <div class="insights-content"
+        style="background: var(--bg-surface-alt); padding: var(--spacing-6); border-radius: var(--radius-md); font-size: 0.95rem; line-height: 1.6;">
+        {{ insights.replace('\n', '<br>')|safe }}
+      </div>
+    </div>
+    {% else %}
+    <!-- Placeholder -->
+    <div class="card"
+      style="text-align: center; padding: var(--spacing-12); border-style: dashed; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div
+        style="background: #E0F2FE; color: #0284C7; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-4);">
+        <i class="ph ph-chart-line-up" style="font-size: 32px;"></i>
+      </div>
+      <h4 style="color: var(--text-muted);">Discover Trends</h4>
+      <p class="text-muted" style="font-size: var(--text-sm);">Select a role to view current market data and AI
+        predictions.</p>
+    </div>
+    {% endif %}
   </div>
-</section>
+
+</div>
+
 {% endblock %}

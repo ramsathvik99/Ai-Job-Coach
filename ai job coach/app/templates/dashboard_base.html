@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div style="padding: 0 var(--spacing-6); margin-bottom: var(--spacing-6);">
+            <div
+                style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-light); font-weight: 700;">
+                Menu
+            </div>
+        </div>
+
+        <nav class="flex-col gap-2">
+            <a href="{{ url_for('dashboard.dashboard') }}"
+                class="sidebar-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
+                <i class="ph ph-squares-four"></i> Dashboard
+            </a>
+            <a href="{{ url_for('resume.resume_upload') }}"
+                class="sidebar-link {% if request.endpoint == 'resume.resume_upload' %}active{% endif %}">
+                <i class="ph ph-read-cv-logo"></i> Resume Analyzer
+            </a>
+            <a href="{{ url_for('coverletter.coverletter') }}"
+                class="sidebar-link {% if request.endpoint == 'coverletter.coverletter' %}active{% endif %}">
+                <i class="ph ph-pen-nib"></i> Cover Letter
+            </a>
+            <a href="{{ url_for('interviewanswers.interview_page') }}"
+                class="sidebar-link {% if request.endpoint == 'interviewanswers.interview_page' %}active{% endif %}">
+                <i class="ph ph-microphone-stage"></i> Interview Prep
+            </a>
+            <a href="{{ url_for('tracker.tracker') }}"
+                class="sidebar-link {% if request.endpoint == 'tracker.tracker' %}active{% endif %}">
+                <i class="ph ph-briefcase"></i> Job Tracker
+            </a>
+            <a href="{{ url_for('prompts.prompt_lab') }}"
+                class="sidebar-link {% if request.endpoint == 'prompts.prompt_lab' %}active{% endif %}">
+                <i class="ph ph-sparkle"></i> Prompt Lab
+            </a>
+            <a href="{{ url_for('insights.market_insights') }}"
+                class="sidebar-link {% if request.endpoint == 'insights.market_insights' %}active{% endif %}">
+                <i class="ph ph-trend-up"></i> Market Insights
+            </a>
+        </nav>
+
+        <div style="margin-top: auto; padding: var(--spacing-6);">
+            <div style="background: var(--bg-surface-alt); padding: var(--spacing-4); border-radius: var(--radius-md);">
+                <h5 style="margin-bottom: var(--spacing-2); font-size: var(--text-sm);">AI Credits</h5>
+                <div
+                    style="height: 6px; background: #e2e8f0; border-radius: var(--radius-full); overflow: hidden; margin-bottom: var(--spacing-2);">
+                    <div style="width: 75%; height: 100%; background: var(--primary-color);"></div>
+                </div>
+                <p style="font-size: var(--text-xs); color: var(--text-muted);">75 / 100 credits used</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-content">
+        {% block dashboard_content %}
+        {% endblock %}
+    </main>
+</div>
+{% endblock %}

@@ -1,19 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img14.jpeg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
+<div class="auth-container">
+  <div class="card auth-card" style="max-width: 500px;">
+    <div class="text-center mb-4">
+      <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-2);">Create Account</h1>
+      <p class="text-muted">Start your career journey today</p>
+    </div>
 
-<div class="register-container">
-  <div class="register-left">
-    <div class="register-box">
-      <h2>Create Your Account</h2>
-      <form id="register-form" method="POST" action="/register">
-        <input type="text" name="name" placeholder="Full Name" required  pattern="[A-Za-z\s]+" />
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="text" name="phone_number" id="phone_number" placeholder="Enter 10-digit phone number"  required />
-        <input type="number" name="age" placeholder="Enter your age" required />
-        <input type="password" name="password" placeholder="Password [minimum 6 characters]" required />
-        <input type="password" name="password_confirm" placeholder="Confirm Password " required />
-        <button type="submit">Register</button>
-      </form>
+    <form id="register-form" method="POST" action="/register">
+
+      <div class="form-group">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" id="name" name="name" class="form-input" placeholder="John Doe" required
+          pattern="[A-Za-z\s]+" />
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required />
+      </div>
+
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: var(--spacing-4);">
+        <div class="form-group">
+          <label for="phone_number" class="form-label">Phone Number</label>
+          <input type="text" id="phone_number" name="phone_number" class="form-input" placeholder="1234567890"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label for="age" class="form-label">Age</label>
+          <input type="number" id="age" name="age" class="form-input" placeholder="25" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-input" placeholder="Minimum 6 characters"
+          required minlength="6" />
+      </div>
+
+      <div class="form-group">
+        <label for="password_confirm" class="form-label">Confirm Password</label>
+        <input type="password" id="password_confirm" name="password_confirm" class="form-input"
+          placeholder="Re-enter password" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-4);">Create
+        Account</button>
+    </form>
+
+    <div class="text-center mt-4" style="font-size: var(--text-sm);">
+      <p>Already have an account? <a href="{{ url_for('auth.login') }}" class="text-primary"
+          style="font-weight: 600;">Sign in</a></p>
     </div>
   </div>
 </div>

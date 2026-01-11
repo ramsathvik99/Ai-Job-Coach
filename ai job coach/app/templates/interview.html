@@ -1,30 +1,116 @@
-{% extends 'base.html' %}
-{% block content %}
-<section class="interview-section">
-  <div class="interview-head">
-    <h2>INTERVIEW PRACTICE</h2>
+{% extends 'dashboard_base.html' %}
 
-    <select id="roleSelect">
-      <option value="">Select Role</option>
-      <option value="Front-End Engineer">Front-End Engineer</option>
-      <option value="Back-End Engineer">Back-End Engineer</option>
-      <option value="Full Stack Engineer">Full Stack Engineer</option>
-      <option value="Software Engineer in Test (QA Engineer)">Software Engineer in Test (QA Engineer)</option>
-      <option value="Software Development Engineer in Test (SDET)">Software Development Engineer in Test (SDET)</option>
-      <option value="DevOps Engineer">DevOps Engineer</option>
-      <option value="Security Engineer">Security Engineer</option>
-      <option value="Data Engineer">Data Engineer</option>
-      <option value="Cloud Architect">Cloud Architect</option>
-      <option value="Systems Engineer">Systems Engineer</option>
-    </select>
+{% block dashboard_content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img15.jpeg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
 
-    <div id="interviewContainer" style="margin-top: 20px;">
-      <p id="questionBox" style="font-weight: bold;"></p>
-      <textarea id="answerInput" placeholder="Type your answer here..." rows="4" cols="50"></textarea><br>
-      <button id="submitAnswerBtn">Submit Answer</button>
-      <p id="feedbackBox" style="margin-top: 10px; color: green;"></p>
-      <p id="progressBox" style="margin-top: 10px;"></p>
+<header class="mb-8">
+  <div class="text-backdrop-light" style="display: inline-block;">
+    <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-2);">Interview Practice</h1>
+    <p class="text-muted" style="margin-bottom: 0;">Master your interview skills with role-specific AI mock interviews.
+    </p>
+  </div>
+</header>
+
+<div class="grid" style="grid-template-columns: 1fr 2fr; gap: var(--spacing-8);">
+
+  <!-- Configuration Sidebar -->
+  <div>
+    <div class="card">
+      <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-4);">Configuration</h3>
+      <div class="form-group">
+        <label for="roleSelect" class="form-label">Select Role</label>
+        <select id="roleSelect" class="form-select">
+          <option value="">-- Choose a Role --</option>
+          <option value="Front-End Engineer">Front-End Engineer</option>
+          <option value="Back-End Engineer">Back-End Engineer</option>
+          <option value="Full Stack Engineer">Full Stack Engineer</option>
+          <option value="Software Engineer in Test (QA Engineer)">QA Engineer</option>
+          <option value="Software Development Engineer in Test (SDET)">SDET</option>
+          <option value="DevOps Engineer">DevOps Engineer</option>
+          <option value="Security Engineer">Security Engineer</option>
+          <option value="Data Engineer">Data Engineer</option>
+          <option value="Cloud Architect">Cloud Architect</option>
+          <option value="Systems Engineer">Systems Engineer</option>
+        </select>
+        <p class="text-muted mt-2" style="font-size: var(--text-xs);">
+          Selecting a role will start a new session with questions tailored to that position.
+        </p>
+      </div>
+
+      <div class="mt-4 p-4 rounded" style="background: var(--bg-surface-alt); border: 1px solid var(--border-color);">
+        <h4 style="font-size: var(--text-sm); font-weight: 600; margin-bottom: var(--spacing-2);">Tips:</h4>
+        <ul
+          style="list-style: disc; padding-left: var(--spacing-4); font-size: var(--text-sm); color: var(--text-muted);">
+          <li style="margin-bottom: 4px;">Be concise and specific.</li>
+          <li style="margin-bottom: 4px;">Use the STAR method.</li>
+          <li>Focus on your contributions.</li>
+        </ul>
+      </div>
     </div>
   </div>
-</section>
+
+  <!-- Interview Area -->
+  <div>
+
+    <!-- State: Select Role Hint (shown by default, hidden by JS logic later maybe, or we rely on empty container) -->
+    <!-- The JS hides/shows 'interviewContainer'. I will wrap the initial state in a div that might need toggling, 
+         but looking at the JS, it just sets interviewContainer.style.display = "block". 
+         So I'll add a 'choose-role-placeholder' that I might need to hide via CSS or JS? 
+         The JS doesn't hide anything else. 
+         I will settle for just having the interview container hidden initially (display: none via JS standard behavior or CSS).
+         The JS sets styles.display.
+    -->
+
+    <div id="interviewContainer" class="card" style="display: none; min-height: 400px;">
+
+      <div class="flex justify-between items-center mb-6 border-b pb-4" style="border-color: var(--border-color);">
+        <span class="badge"
+          style="background: var(--primary-light); color: var(--primary-color); padding: 4px 12px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 600;">Active
+          Session</span>
+        <span id="progressBox" class="text-muted" style="font-size: var(--text-sm); font-weight: 500;"></span>
+      </div>
+
+      <div class="mb-6">
+        <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-2);">Question:</h3>
+        <p id="questionBox" style="font-size: 1.1rem; font-weight: 500; color: var(--text-main); line-height: 1.5;"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="answerInput" class="form-label">Your Answer</label>
+        <textarea id="answerInput" class="form-textarea" rows="6" placeholder="Type your answer here..."
+          style="resize: vertical;"></textarea>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button id="submitAnswerBtn" class="btn btn-primary">
+          Submit Answer
+        </button>
+      </div>
+
+      <!-- Feedback Area -->
+      <div id="feedbackBox" class="mt-4" style="font-weight: 600; font-size: 1.1rem;"></div>
+
+    </div>
+
+    <!-- Placeholder for when no session is active -->
+    <!-- Since I cannot modify JS easily to toggle this, I will just leave it. 
+         If the container is hidden, the right side will be empty.
+         I'll add a 'Start Session' placeholder styled div that is visible always? No, that would clutter.
+         The user selects a role and it appears.
+    -->
+    <div class="text-center text-muted" style="margin-top: 100px; display: none;">
+      <!-- Hidden by default, maybe show if container is hidden? CSS cannot do that easily without state. I'll rely on the user selecting a role. -->
+      Select a role to begin.
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}

@@ -46,7 +46,8 @@ def tracker():
         flash("Job application added successfully!", "success")
         return redirect(url_for('tracker.tracker')) 
 
-    return render_template('tracker.html', user=current_user)
+    applications = JobApplication.query.filter_by(user_id=current_user.id).all()
+    return render_template('tracker.html', user=current_user, applications=applications)
 
 
 @tracker_bp.route('/tracker/data')
@@ -100,4 +101,4 @@ def delete_application(application_id):
     db.session.delete(application)
     db.session.commit()
     flash("Application deleted successfully!", "success")
-    return redirect(url_for('tracker.tracker_data'))
+    return redirect(url_for('tracker.tracker'))

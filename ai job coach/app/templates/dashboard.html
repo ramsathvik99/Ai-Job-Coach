@@ -1,56 +1,114 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="dashboard-container">
-  <main class="main-content">
-    <section class="overview">
-      <h1>Project Overview</h1>
-      <p>Track your progress and stay organized throughout your job search.</p>
-    </section>
+{% extends 'dashboard_base.html' %}
 
-    <section class="stats">
-      <div class="stat-card">
-        <p>Applications Sent</p>  
-        <h3>{{ stats.applications_sent }}</h3>
-      </div>
-      <div class="stat-card">
-        <p>Interviews Scheduled</p>
-        <h3>{{ stats.interviews_scheduled }}</h3>
-      </div>
-      <div class="stat-card">
-        <p>Offers Received</p>
-        <h3>{{ stats.offers_received }}</h3>
-      </div>
-    </section>
+{% block dashboard_content %}
+<style>
+  body {
+    background-image: url("{{ url_for('static', filename='images/img17.jpg') }}") !important;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+</style>
 
-    <section class="tools">
-      <h2>Tools</h2>
-      <div class="tools-grid">
-        <div class="tool-card">
-          <h3><a href="{{ url_for('resume.resume_upload') }}">Resume</a></h3>
-          <p>Craft a compelling resume</p>
-        </div>
-        <div class="tool-card">
-          <h3><a href="{{ url_for('coverletter.coverletter') }}">Cover Letter</a></h3>
-          <p>Create a tailored cover letter</p>
-        </div>
-        <div class="tool-card">
-          <h3><a href="{{ url_for('prompts.prompt_lab') }}">Prompts</a></h3>
-          <p>Get inspired with writing prompts</p>
-        </div>
-        <div class="tool-card">
-          <h3><a href="{{ url_for('interviewanswers.interview_page') }}">Interview Practice</a></h3>
-          <p>Practice your interview skills</p>
-        </div>
-        <div class="tool-card">
-          <h3><a href="{{ url_for('insights.market_insights') }}">AI Insights</a></h3>
-          <p>Gain insights from AI</p>
-        </div>
-        <div class="tool-card">
-          <h3><a href="{{ url_for('tracker.tracker') }}">Job Tracker</a></h3>
-          <p>Manage your job applications</p>
-        </div>
-      </div>
-    </section>
-  </main>
+<header class="flex justify-between items-center mb-8">
+  <div class="text-backdrop-light">
+    <h1 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-1);">Dashboard</h1>
+    <p class="text-muted" style="margin-bottom: 0;">Welcome back, {{ current_user.name }}</p>
+  </div>
+  <div class="flex gap-4">
+    <a href="{{ url_for('resume.resume_upload') }}" class="btn btn-primary">
+      <i class="ph ph-plus" style="margin-right: 8px;"></i> Analyze Resume
+    </a>
+  </div>
+</header>
+
+<!-- Stats Grid -->
+<div class="grid mb-8" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-6);">
+
+  <div class="stat-card">
+    <div class="stat-icon">
+      <i class="ph ph-paper-plane-tilt"></i>
+    </div>
+    <div>
+      <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: 0;">Applications</p>
+      <h3 style="margin-bottom: 0;">{{ stats.applications_sent|default(0) }}</h3>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon" style="background-color: var(--primary-light); color: var(--status-success);">
+      <i class="ph ph-calendar-check"></i>
+    </div>
+    <div>
+      <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: 0;">Interviews</p>
+      <h3 style="margin-bottom: 0;">{{ stats.interviews_scheduled|default(0) }}</h3>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon" style="background-color: var(--primary-light); color: var(--status-warning);">
+      <i class="ph ph-trophy"></i>
+    </div>
+    <div>
+      <p class="text-muted" style="font-size: var(--text-sm); margin-bottom: 0;">Offers</p>
+      <h3 style="margin-bottom: 0;">{{ stats.offers_received|default(0) }}</h3>
+    </div>
+  </div>
+
 </div>
-{% endblock %}
+
+<!-- Quick Access / Tools -->
+<div class="text-backdrop-light" style="display: inline-block; margin-bottom: var(--spacing-6);">
+  <h2 style="font-size: var(--text-xl); margin-bottom: 0;">Quick Access</h2>
+</div>
+<div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--spacing-6);">
+
+  <a href="{{ url_for('resume.resume_upload') }}" class="card hover:shadow-md transition-all group">
+    <div class="flex items-center justify-between mb-4">
+      <div
+        style="background: var(--primary-light); color: var(--primary-color); padding: 10px; border-radius: var(--radius-md);">
+        <i class="ph ph-read-cv-logo" style="font-size: 24px;"></i>
+      </div>
+      <i class="ph ph-arrow-right text-muted group-hover:text-primary transition-colors"></i>
+    </div>
+    <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-2);">Resume Analyzer</h3>
+    <p style="font-size: var(--text-sm); margin-bottom: 0;">Get detailed feedback and ATS scoring for your resume.</p>
+  </a>
+
+  <a href="{{ url_for('coverletter.coverletter') }}" class="card hover:shadow-md transition-all group">
+    <div class="flex items-center justify-between mb-4">
+      <div
+        style="background: var(--primary-light); color: var(--status-success); padding: 10px; border-radius: var(--radius-md);">
+        <i class="ph ph-pen-nib" style="font-size: 24px;"></i>
+      </div>
+      <i class="ph ph-arrow-right text-muted group-hover:text-primary transition-colors"></i>
+    </div>
+    <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-2);">Cover Letter Generator</h3>
+    <p style="font-size: var(--text-sm); margin-bottom: 0;">Create personalized cover letters in seconds.</p>
+  </a>
+
+  <a href="{{ url_for('interviewanswers.interview_page') }}" class="card hover:shadow-md transition-all group">
+    <div class="flex items-center justify-between mb-4">
+      <div
+        style="background: var(--primary-light); color: var(--status-warning); padding: 10px; border-radius: var(--radius-md);">
+        <i class="ph ph-microphone-stage" style="font-size: 24px;"></i>
+      </div>
+      <i class="ph ph-arrow-right text-muted group-hover:text-primary transition-colors"></i>
+    </div>
+    <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-2);">Interview Practice</h3>
+    <p style="font-size: var(--text-sm); margin-bottom: 0;">Mock interviews with real-time AI feedback.</p>
+  </a>
+
+  <a href="{{ url_for('tracker.tracker') }}" class="card hover:shadow-md transition-all group">
+    <div class="flex items-center justify-between mb-4">
+      <div
+        style="background: var(--primary-light); color: var(--status-info); padding: 10px; border-radius: var(--radius-md);">
+        <i class="ph ph-briefcase" style="font-size: 24px;"></i>
+      </div>
+      <i class="ph ph-arrow-right text-muted group-hover:text-primary transition-colors"></i>
+    </div>
+    <h3 style="font-size: var(--text-lg); margin-bottom: var(--spacing-2);">Job Tracker</h3>
+    <p style="font-size: var(--text-sm); margin-bottom: 0;">Manage your applications and status updates.</p>
+  </a>
+
+  {% endblock dashboard_content %}
